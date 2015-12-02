@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="Cajetin Spreadsheet"
+    title_url="http://sites.google.com/site/fdvcreations/google-sites/cajetin/cajetin-spreadsheet"
+	height="150"
+    width="200" 
+	author="FdvCreations"
+	author_email="dev.fdvcreations@gmail.com"
+    description="GadGet para Google Sites que muestra una sucesi󮠤e mensajes introducidos en una Hoja de Calculo en Google Docs. La transicion se realiza mediante efecto fade."	
+    screenshot="http://sites.google.com/site/fdvgadgets/cajetin/cajetinspreadsheetscreen.jpg"
+	thumbnail="http://sites.google.com/site/fdvgadgets/cajetin/cajetin.png"
+	scrolling="false"
+	author_location="Cordoba, Spain"
+	scaling="false">	
+	<Require feature="dynamic-height"/>
+	<Require feature="setprefs"/>
+    </ModulePrefs>  
+  <UserPref name="VarUrlRSS" display_name="URL de la Hoja de Calculo en RSS" default_value=""/>  
+  <UserPref name="VarBorde" display_name="Estilo del Borde" default_value="0" datatype="enum" >
+   <EnumValue value="0" />
+	    <EnumValue value="1" />
+        <EnumValue value="2" />
+        <EnumValue value="3" />
+        <EnumValue value="4" />
+        <EnumValue value="5" />
+        <EnumValue value="6" />
+        <EnumValue value="7" />
+        <EnumValue value="8" />
+        <EnumValue value="9" />
+	</UserPref>  
+  <UserPref name="VarColorBorde" display_name="Color del borde" default_value="#a5c3f3"/>
+  <UserPref name="VarColorFondo" display_name="Color de fondo" default_value="#f1f868"/>
+  <UserPref name="VarColorLetra" display_name="Color de la letra" default_value="black"/>
+  <UserPref name="VarSize" display_name="grosor del texto" default_value="12"/>
+  <UserPref name="VarRefresco" display_name="Refresco del Feed" default_value="900" datatype="enum" >
+   <EnumValue value="60" />
+	<EnumValue value="300" />
+        <EnumValue value="900" />
+        <EnumValue value="1800" />
+        <EnumValue value="3600" />
+        <EnumValue value="43200" />
+        <EnumValue value="86400" />
+	</UserPref>
+  <UserPref name="VarTmpMens" display_name="Tiempo entre mensajes" default_value="5" />
+  
+  <UserPref name="VarOrden" display_name="Orden en mensajes" default_value="1" datatype="enum" >
+   <EnumValue value="0" />
+   <EnumValue value="1" />
+   </UserPref>
+<Content type="html" view="home"><![CDATA[
+<SCRIPT language=javascript src="https://sites.google.com/site/fdvgadgets/bbcode/bbcode2html.js"></SCRIPT><div id="content_div"></div><script type="text/javascript">document.body.style.backgroundColor="transparent";var prefs=new gadgets.Prefs();var urlRSS=prefs.getString("VarUrlRSS");var VarBorde=prefs.getString("VarBorde");var VarColorFondo=prefs.getString("VarColorFondo");var VarColorLetra=prefs.getString("VarColorLetra");var VarColorBorde=prefs.getString("VarColorBorde");var VarSize=prefs.getString("VarSize");var rfRSS=parseInt(prefs.getString("VarRefresco"));var tmEntreMens=parseInt(prefs.getString("VarTmpMens"));var Orden=parseInt(prefs.getString("VarOrden"));var alto_gadget=gadgets.window.getViewportDimensions().height;var ancho_gadget=gadgets.window.getViewportDimensions().width;var mensajes=new Array();var nMensaje;var Temporizador;var margen=0;function makeCachedRequest(url,callback,params,refreshInterval){var ts=new Date().getTime();var sep="?";if(refreshInterval&&refreshInterval>0){ts=Math.floor(ts/(refreshInterval*1000))}if(url.indexOf("?")>-1){sep="&"}url=[url,sep,"nocache=",ts].join("");gadgets.io.makeRequest(url,callback,params)}var fadeEffect=function(){return{init:function(id,flag,target){this.elem=document.getElementById(id);clearInterval(this.elem.si);this.target=target?target:flag?100:0;this.flag=flag||-1;this.alpha=this.elem.style.opacity?parseFloat(this.elem.style.opacity)*100:0;this.si=setInterval(function(){fadeEffect.tween()},50)},tween:function(){if(this.alpha==this.target){clearInterval(this.si);fadeRealizado(this.alpha)}else{var value=Math.round(this.alpha+((this.target-this.alpha)*.05))+(1*this.flag);this.elem.style.opacity=value/100;this.elem.style.filter='alpha(opacity='+value+')';this.alpha=value}}}}();function InicioGadGet(){var html="";html+='<div id="cajetin" style="position:absolute; visibility=visible; left:0; top:0;';if(VarBorde!="0"){html+='border-style: ';switch(VarBorde){case"1":html+=' solid; border-width: 1; ';margen=2;break;case"2":html+=' dotted; border-width: 1; ';margen=2;break;case"3":html+=' double; border-width: 3; ';margen=6;break;case"4":html+=' dashed; border-width: 1; ';margen=2;break;case"5":html+=' groove; border-width: 4; ';margen=8;break;case"6":html+=' ridge; border-width: 4; ';margen=8;break;case"7":html+=' inset; border-width: 4; ';margen=8;break;case"8":html+=' outset; border-width: 4; ';margen=8;break;case"9":html+=' solid; border-width: 2; border-radius: 5px; ';margen=4;break}html+=' border-color: ';html+=VarColorBorde;html+='; background-color: ';html+=VarColorFondo;html+='; '}else{html+='border-style: none; background-color: ';html+=VarColorFondo;html+=';'}if(!document.all){ancho_gadget-=margen;alto_gadget-=margen}html+=' width: ';html+=ancho_gadget;html+='px; height: ';html+=alto_gadget;html+='px; " ><center>';html+='<img style="height: 100%; vertical-align: middle; width: 0px;" />';html+='<img src="https://sites.google.com/site/fdvgadgets/cajetin/bigspinner.gif">';html+='</center></div>';_gel("content_div").innerHTML=html;var params={};params[gadgets.io.RequestParameters.CONTENT_TYPE]=gadgets.io.ContentType.DOM;if(urlRSS!=""){makeCachedRequest(urlRSS,procesaRSS,params,rfRSS)}else{var mbb;mbb='<div style=" font-size: 12; color: black; background-color: white;padding:5;">';mbb+='<br><img src="https://sites.google.com/site/fdvgadgets/cajetin/error.gif" ';mbb+='style="height:16; width:16; float:left; ">';mbb+='<b>&nbsp;Sin Feed</b>';mbb+='<br><br>El WebMaster no introdujo ninguna URL para el feed.';mbb+='</div>';_gel("cajetin").innerHTML=mbb}};function procesaRSS(obj){var mbb;if(obj.errors!=""){mbb='<div style=" font-size: 12; color: black; background-color: white;padding:5;">';mbb+='<br><img src="https://sites.google.com/site/fdvgadgets/cajetin/error.gif" ';mbb+='style="height:16; width:16; float:left; ">';mbb+='<b>&nbsp;Error al cargar el Feed</b>';mbb+='<br><br>Ocurri\u00f3 un error al cargar los feeds, compruebe que la direcci\u00f3n ';mbb+='introducida en el Gadget es la correcta.</div>';_gel("cajetin").innerHTML=mbb}else{var fecha;var contenido;var datosDOM=obj.data;var itemList=datosDOM.getElementsByTagName("item");if(itemList.length>0){for(var i=0;i<itemList.length;i++){var nodeList=itemList.item(i).childNodes;titulo="";contenido="";for(var j=0;j<nodeList.length;j++){var node=nodeList.item(j);switch(node.nodeName){case"title":fecha=node.firstChild.nodeValue;break;case"description":contenido=node.firstChild.nodeValue;break}}mbb="";mbb+='[b][u]';mbb+=contenido.substr(8,(contenido.indexOf(", comentarios:")-8));mbb+='[/b][/u]';mbb+='[right][size=';mbb+=(parseInt(VarSize)-2);mbb+=']';mbb+=fecha;mbb+='[/size][/right]';mbb+=contenido.substr((contenido.indexOf(", comentarios:"))+15);if(Orden==1){mensajes.unshift(mbb)}else{mensajes.push(mbb)}}nMensaje=0;cargaMensaje()}else{mbb='<div style=" font-size: 12; color: black; background-color: white; padding:5;">';mbb+='<br><img src="https://sites.google.com/site/fdvgadgets/cajetin/alerta.gif" ';mbb+='style="height:16; width:16; float:left; ">';mbb+='<b>&nbsp;No existen contenidos</b>';mbb+='<br><br>Actualmente no existen contenidos.</div>';_gel("cajetin").innerHTML=mbb}}};function cargaMensaje(){var desfase=0;if(document.all){desfase=margen}var html="";html+='<div id="mensaje" style="position:absolute; visibility=visible; opacity:0;';html+="filter:alpha(opacity='0'); ";html+='left:0';html+='; top:0; ';html+=' font-size: ';html+=VarSize;html+='; color:';html+=VarColorLetra;html+='; width: ';html+=(ancho_gadget-desfase);html+='px; height: ';html+=(alto_gadget-desfase);html+='px; " >';html+='<div style="position:absolute; padding: 5px; ';html+='left:0';html+='; top:0';html+='; width: ';html+=(ancho_gadget-10-desfase);html+='px; height: ';html+=(alto_gadget-13-VarSize-desfase);html+='px; " >';html+=bbcode2html(mensajes[nMensaje]);html+='</div>';html+='<div style="position:absolute; text-align:right; ';html+='left:0';html+='; top:';html+=(alto_gadget-VarSize-3-desfase);html+='; width: ';html+=(ancho_gadget-3-desfase);html+='px; height: ';html+=VarSize;html+='px; " >';html+=(nMensaje+1)+"/"+mensajes.length;html+='</div>';html+='</div>';_gel("cajetin").innerHTML=html;nMensaje++;if(nMensaje>=mensajes.length){nMensaje=0}fadeEffect.init('mensaje',1)};function fadeRealizado(valor){if(valor==100){Temporizador=setInterval("borraMensaje()",(tmEntreMens*1000))}else{cargaMensaje()}}function borraMensaje(){clearInterval(Temporizador);fadeEffect.init('mensaje',0)};gadgets.util.registerOnLoadHandler(InicioGadGet);</script>
+   ]]>
+</Content>
+
+<Content type="html" view="configuration"  preferred_height="280">
+   <![CDATA[
+
+<table width="100%" border=0><tr>
+      <td width="25%">URL del SpreadSheet en RSS:</td>
+       <td><input type="text" id="VarUrlRSS" style="width: 100%" value="__UP_VarUrlRSS__" onchange="registra('VarUrlRSS')"></td>
+    </tr></table>
+    
+<table width="100%" border=0><tr>
+	   <td>Color fondo:</td>
+       <td><input type="text" id="VarColorFondo" style="width: 100%" value="__UP_VarColorFondo__" onchange="registra('VarColorFondo')"></td>
+           <td>Borde:</td>
+       <td><select id="VarBorde" onchange="registra('VarBorde')"><option value="0">Sin borde<option value="1">Linea solida<option value="2">Punteado<option value="3">Linea doble<option value="4">Linea discontinua<option value="5">Ranura<option value="6">Cresta<option value="7">Relieve interior<option value="8">Relieve exterior<option value="9">Redondeado</td>
+           <td>Color del borde:</td>
+       <td><input type="text" id="VarColorBorde" style="width: 100%" value="__UP_VarColorBorde__" onchange="registra('VarColorBorde')"></td>	    
+       </tr><tr>
+       	   <td>Color letra:</td>
+       <td><input type="text" id="VarColorLetra" style="width: 100%" value="__UP_VarColorLetra__" onchange="registra('VarColorLetra')"></td>
+	   <td>Grosor del texto:</td>
+       <td><input type="text" id="VarSize" style="width: 50" value="__UP_VarSize__" onchange="registra('VarSize')"></td>
+       <td>&nbsp;</td>
+       <td>&nbsp;</td>
+</tr><tr>
+      <td>Orden en mensajes:</td>
+       <td><select id="VarOrden" onchange="registra('VarOrden')" style="width: 100%"><option value="0">normal<option value="1">inverso</td>  
+      
+      <td>Tiempo entre mensajes:</td>
+       <td><input type="text" id="VarTmpMens" style="width: 50%" value="__UP_VarTmpMens__" onchange="registra('VarTmpMens')"></td>
+      
+      <td>Refresco del Feed:</td>
+       <td><select id="VarRefresco" onchange="registra('VarRefresco')" style="width: 100%"><option value="60">1 minuto<option value="300">5 minutos<option value="900">15 minutos<option value="1800">30 minutos<option value="3600">1 hora<option value="43200">12 horas<option value="86400">24 horas</td>   
+    </tr></table>
+<table width="100%" border=0><tr>
+<td align=right><input type="button" value="Visita la web del autor para ayuda y comentarios" style="background-color:black; color:white; font-size:10px;" onclick="window.open('http://sites.google.com/site/fdvcreations/Home','FdvCreations','');"></td></tr>
+</table>
+
+<script type="text/javascript">
+document.getElementById("VarBorde").value="__UP_VarBorde__";
+document.getElementById("VarRefresco").value="__UP_VarRefresco__";
+document.getElementById("VarOrden").value="__UP_VarOrden__";
+
+// Get userprefs
+var prefs = new gadgets.Prefs();
+function registra(variable){
+    prefs.set (variable,document.getElementById(variable).value);
+	}		 
+gadgets.window.adjustHeight();
+      
+//gadgets.util.registerOnLoadHandler(registerHandlers);
+
+</script>   
+   ]]>
+</Content>
+</Module>
